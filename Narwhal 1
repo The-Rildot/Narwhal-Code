@@ -1,0 +1,55 @@
+
+package bullshit3;
+
+import java.io.File;
+import java.util.Scanner;
+
+public class Bullshit3 {
+
+    public static void main(String[] args) throws Exception {
+        int counter = readFile();
+        int die1 = randC(counter);
+        System.out.println(die1);
+        System.out.println(counter);
+        printC(die1);
+    }
+
+    public static int randC(int counter) {
+
+        int die1 = (int) (Math.random() * counter + 1);
+        return die1;
+    }
+
+    public static int readFile() throws Exception {
+        Scanner sc = new Scanner(new File("ComplimentFile.txt"));
+        int counter = 0;
+
+        String[] Comp = new String[1000];
+
+        while (sc.hasNextLine()) {
+            for (int i = 0; i <= 2; i++) {
+                Comp[i] = sc.nextLine();
+                System.out.println(Comp[i]);
+                counter++;
+            }
+            
+        }
+        return counter;
+    }
+    public static void printC(int die1)throws Exception{
+        Scanner sc = new Scanner(new File("ComplimentFile.txt"));
+        String state;
+        String[] Comp = new String[1000];
+
+        while (sc.hasNextLine()) {
+            for (int i = 0; i <= 2; i++) {
+                Comp[i] = sc.nextLine();
+            }
+            
+        }
+        state = Comp[die1];
+        System.out.println(state);
+        
+        
+    }
+}
