@@ -1,7 +1,6 @@
-
 package bullshit3;
 
-import java.io.File;
+import java.io.*;
 import java.util.Scanner;
 
 public class Bullshit3 {
@@ -11,7 +10,7 @@ public class Bullshit3 {
         int die1 = randC(counter);
         System.out.println(die1);
         System.out.println(counter);
-        printC(die1);
+        printC(die1, counter);
     }
 
     public static int randC(int counter) {
@@ -23,33 +22,32 @@ public class Bullshit3 {
     public static int readFile() throws Exception {
         Scanner sc = new Scanner(new File("ComplimentFile.txt"));
         int counter = 0;
+        //int length = (("ComplimentFile.txt").length());
 
-        String[] Comp = new String[1000];
+        String[] Comp = new String[1000000];
 
         while (sc.hasNextLine()) {
-            for (int i = 0; i <= 2; i++) {
+            for (int i = 0; i < 1; i++) {
                 Comp[i] = sc.nextLine();
                 System.out.println(Comp[i]);
                 counter++;
             }
-            
         }
         return counter;
     }
-    public static void printC(int die1)throws Exception{
+
+    public static void printC(int die1, int counter) throws Exception {
         Scanner sc = new Scanner(new File("ComplimentFile.txt"));
         String state;
         String[] Comp = new String[1000];
 
         while (sc.hasNextLine()) {
-            for (int i = 0; i <= 2; i++) {
+            for (int i = 0; i < counter; i++) {
                 Comp[i] = sc.nextLine();
             }
-            
         }
-        state = Comp[die1];
+        state = Comp[die1-1];
         System.out.println(state);
-        
-        
+
     }
 }
