@@ -1,0 +1,299 @@
+/**
+ * The code Has been created by Team narwhal
+ */
+package bullshit2;
+
+import java.text.DecimalFormat;
+import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.*;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
+import java.io.*;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import static javafx.application.Application.launch;
+
+public class Bullshit2 extends Application {
+
+    Scene scene1, scene2;
+    public String myName;
+    public int line = 12;
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+
+        primaryStage.setTitle("Narwhal Compliment Generator");
+        GridPane grid = new GridPane();
+        GridPane grid2 = new GridPane();
+        grid.setAlignment(Pos.TOP_CENTER);
+
+        grid.setPadding(new Insets(25, 25, 25, 25));
+
+        grid.setHgap(10);
+
+        grid.setVgap(10);
+
+        // Scene 1
+        // add text field
+        grid.setAlignment(Pos.TOP_CENTER);
+
+        grid.setPadding(new Insets(25, 25, 25, 25));
+
+        grid.setHgap(10);
+
+        grid.setVgap(10);
+
+        // Scene 1
+        // add text field
+        Label promptname = new Label("WELCOME");
+        grid.add(promptname, 0, 5);
+        promptname.setFont(new Font("Comic San", 72));
+
+        // submit button box
+        HBox buttonBox = new HBox(15);
+        Button continuebutton = new Button("Continue");
+        buttonBox.getChildren().add(continuebutton);
+        grid.add(buttonBox, 0, 10); // setting button location
+        // setting action for button
+        continuebutton.setOnAction(e -> {
+            primaryStage.setScene(scene2);
+
+        });
+
+        // scene layout with grid
+        scene1 = new Scene(grid, 600, 400);
+        // Scene 2
+        primaryStage.setTitle("Narwhal Compliment Generator");
+
+        grid2.setAlignment(Pos.TOP_CENTER);
+
+        grid2.setPadding(new Insets(25, 25, 25, 25));
+
+        grid2.setHgap(10);
+
+        grid2.setVgap(10);
+
+        // hello _ name! text field
+        grid2.add(new Label("HELLO! "), 0, 2);
+
+        //combobox for topic
+        grid2.add(new Label("Select Topic: "), 0, 6);
+        String topics[] = {"Compliment", "Advice", "Motivational Quotes"};
+        ComboBox comboB = new ComboBox(FXCollections.observableArrayList(topics));
+        grid2.add(comboB, 1, 6);
+        //word box
+        HBox outputs = new HBox(15);
+
+        //generate button
+        HBox buttonBox2 = new HBox(15);
+        Button words = new Button("Generate");
+        buttonBox2.getChildren().add(words);
+        grid2.add(buttonBox2, 2, 2);
+
+        //
+        words.setOnAction(e -> {
+
+            if (comboB.getValue().toString().equals("Compliment")) {
+                int counter = 0;
+                try {
+                    counter = readFile();
+                } catch (Exception ex) {
+                    Logger.getLogger(Bullshit2.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                int die1 = randC(counter);
+                String state = null;
+                try {
+                    state = printC(die1, counter);
+                } catch (Exception ex) {
+                    Logger.getLogger(Bullshit2.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                TextArea textArea = new TextArea();
+                grid2.add(textArea, 1, 13);
+                textArea.setText(state);
+                textArea.setPrefSize(300, 100);
+                textArea.setWrapText(true);
+
+            } else if (comboB.getValue().toString().equals("Advice")) {
+                int counter1 = 0;
+                try {
+                    counter1 = readAdvice();
+                } catch (Exception ex) {
+                    Logger.getLogger(Bullshit2.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                int die2 = randC(counter1);
+                String state = null;
+                try {
+                    state = printAdvice(die2, counter1);
+                } catch (Exception ex) {
+                    Logger.getLogger(Bullshit2.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                TextArea textArea = new TextArea();
+                grid2.add(textArea, 1, 13);
+                textArea.setText(state);
+                textArea.setPrefSize(300, 100);
+                textArea.setWrapText(true);
+            } else if (comboB.getValue().toString().equals("Motivational Quotes")) {
+                int counter2 = 0;
+                try {
+                    counter2 = readQuote();
+                } catch (Exception ex) {
+                    Logger.getLogger(Bullshit2.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                int die3 = randC(counter2);
+                String state = null;
+                try {
+                    state = printQuote(die3, counter2);
+                } catch (Exception ex) {
+                    Logger.getLogger(Bullshit2.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                TextArea textArea = new TextArea();
+                grid2.add(textArea, 1, 13);
+                textArea.setText(state);
+                textArea.setPrefSize(300, 100);
+                textArea.setWrapText(true);
+            }
+        });
+
+        // buttonbox 2 for going back to the previous interface
+        HBox buttonBox3 = new HBox(15);
+        Button back = new Button("Back");
+        buttonBox3.getChildren().add(back);
+        grid2.add(buttonBox3, 2, 4);
+        back.setOnAction(e -> primaryStage.setScene(scene1));
+
+        //exit button
+        Button exit = new Button();
+
+        exit.setText("Exit");
+
+        exit.setOnAction(event -> {
+            System.exit(1);
+        });
+        buttonBox.getChildren().add(exit);
+
+        scene2 = new Scene(grid2, 600, 400);
+
+        primaryStage.setScene(scene1);
+        primaryStage.show();
+    }
+    // Getter
+
+    public String getName() {
+        return myName;
+    }
+
+    // Setter
+    public void setName(String newName) {
+        this.myName = newName;
+    }
+
+    public static void main(String[] args) {
+        launch(args);
+
+    }
+
+    public static int randC(int counter) {
+        int die1 = (int) (Math.random() * counter + 1);
+        return die1;
+    }
+
+    public static int readFile() throws Exception {
+        Scanner sc = new Scanner(new File("ComplimentFile.txt"));
+        int counter = 0;
+        String[] Comp = new String[1000000];
+        while (sc.hasNextLine()) {
+            for (int i = 0; i < 1; i++) {
+                Comp[i] = sc.nextLine();
+                //System.out.println(Comp[i]);
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    public static String printC(int die1, int counter) throws Exception {
+        Scanner sc = new Scanner(new File("ComplimentFile.txt"));
+        String state;
+        String[] Comp = new String[1000];
+        while (sc.hasNextLine()) {
+            for (int i = 0; i < counter; i++) {
+                Comp[i] = sc.nextLine();
+            }
+        }
+        state = Comp[die1 - 1];
+        return state;
+    }
+
+    public static int readAdvice() throws Exception {
+        Scanner sc = new Scanner(new File("AdviceFile.txt"));
+        int counter1 = 0;
+        //int length = (("ComplimentFile.txt").length());
+
+        String[] Comp = new String[1000000];
+
+        while (sc.hasNextLine()) {
+            for (int i = 0; i < 1; i++) {
+                Comp[i] = sc.nextLine();
+                //System.out.println(Comp[i]);
+                counter1++;
+            }
+        }
+        return counter1;
+    }
+
+    public static String printAdvice(int die2, int counter1) throws Exception {
+        Scanner sc = new Scanner(new File("AdviceFile.txt"));
+        String state;
+        String[] Comp = new String[1000];
+
+        while (sc.hasNextLine()) {
+            for (int i = 0; i < counter1; i++) {
+                Comp[i] = sc.nextLine();
+            }
+        }
+        state = Comp[die2 - 1];
+        //System.out.println(state);
+        return state;
+    }
+
+    public static int readQuote() throws Exception {
+        Scanner sc = new Scanner(new File("QuoteFile.txt"));
+        int counter2 = 0;
+        //int length = (("ComplimentFile.txt").length());
+
+        String[] Comp = new String[1000000];
+
+        while (sc.hasNextLine()) {
+            for (int i = 0; i < 1; i++) {
+                Comp[i] = sc.nextLine();
+                //System.out.println(Comp[i]);
+                counter2++;
+            }
+        }
+        return counter2;
+    }
+
+    public static String printQuote(int die3, int counter2) throws Exception {
+        Scanner sc = new Scanner(new File("QuoteFile.txt"));
+        String state;
+        String[] Comp = new String[1000];
+
+        while (sc.hasNextLine()) {
+            for (int i = 0; i < counter2; i++) {
+                Comp[i] = sc.nextLine();
+            }
+        }
+        state = Comp[die3 - 1];
+        //System.out.println(state);
+        return state;
+    }
+
+}
